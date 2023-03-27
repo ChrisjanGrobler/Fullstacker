@@ -4,18 +4,21 @@ TODO:
 Create a Inventory management system.
 Allow users to create items.
 Allow users to view an item.
+Allow users to list items.
 Allow users to update items.
 Allow users to delete items.
-Allow users to list items.
+
 
 #Objectives
-1. Create a database table for Inventory
+1. Create a database table for Inventory (done)
 Tables:
 - Item
 	- Id
 	- Name
 	- Description
 	
-2.  Create an API endpoint that allows a user to create an item.
-
-
+2.  Create an API endpoint that allows a user to create an item. (done)
+3. Create an API endpoint for retrieving items (done)
+// TODO
+4. Create an API endpoint for updating an item
+5. Create an API endpoint for deleting an item
