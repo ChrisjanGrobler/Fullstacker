@@ -10,6 +10,11 @@ Allow users to delete items.
 
 #Objectives
 - Create a database table for Inventory
-
+Tables:
+- Item
+	- Id
+	- Name
+	- Description
+	
 
 
