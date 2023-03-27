@@ -1,0 +1,15 @@
+TODO:
+
+#Vision
+Create a Inventory management system.
+Allow users to view an item.
+Allow users to list items.
+Allow users to create items.
+Allow users to update items.
+Allow users to delete items.
+
+#Objectives
+- Create a database table for Inventory
+
+
+
