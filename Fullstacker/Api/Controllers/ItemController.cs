@@ -74,16 +74,15 @@ namespace API.Controllers
         public IActionResult Delete(int id)
         {
             bool resourceDeleted = true;
-
             if (resourceDeleted == true)
             {
-                return NoContent(); // HTTP Status Code 204
+                return NoContent(); // HTTP Status Code 204 
             }
             else
             {
-                return NotFound(); // HTTP Status Code 404
+                return NoContent();
             }
-
+              
         }
 
         
@@ -98,6 +97,7 @@ namespace API.Controllers
         {
             request.Name = "Doritos";
             request.Description = "Chips";
+
             return Ok(request); // HTTP Status Code 200
         }
     }
