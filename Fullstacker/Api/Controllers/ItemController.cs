@@ -1,4 +1,5 @@
 ﻿using API.Dtos;
+using DataLayer.Contexts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -6,6 +7,13 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class ItemController : ControllerBase
     {
+        private readonly DataContext _dataContext;
+
+        public ItemController(DataContext dataContext)
+        {
+            _dataContext = dataContext;
+        }
+
         /// <summary>
         /// An endpoint for retrieving a list of items
         /// </summary>
@@ -14,23 +22,7 @@ namespace API.Controllers
         [Route("get")]
         public IActionResult Get()
         {
-            var items = new List<GetItemDto>
-            {
-                new GetItemDto
-            {
-                Id = 1,
-                Name = "Lip Ice",
-                Description = "Self explanatory"
-            },
-                new GetItemDto
-                {
-                Id = 2,
-                Name = "Dog Food",
-                Description = ""
-                }
-            };
-
-            return Ok(items);
+            return Ok();
         }
 
         /// <summary>
@@ -42,12 +34,7 @@ namespace API.Controllers
         [Route("get/{id}")]
         public IActionResult Get(int id)
         {
-            var item = new GetItemDto
-            {
-                Id = 1,
-                Name = "Lip Ice",
-                Description = "Self explanatory"
-            };
+            var item = _dataContext.Item.FirstOrDefault(x => x.Id == id);
 
             return Ok(item);
         }
@@ -73,16 +60,7 @@ namespace API.Controllers
         [Route("delete/{id}")]
         public IActionResult Delete(int id)
         {
-            bool resourceDeleted = true;
-            if (resourceDeleted == true)
-            {
-                return NoContent(); // HTTP Status Code 204 
-            }
-            else
-            {
-                return NotFound();
-            }
-              
+            return NoContent();
         }
 
         
@@ -93,11 +71,8 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route("update/{id}")]
-        public IActionResult Update([FromBody] GetItemDto request)
+        public IActionResult Update([FromQuery] int id, [FromBody] UpdateItemDto request)
         {
-            request.Name = "Doritos";
-            request.Description = "Chips";
-
             return Ok(request); // HTTP Status Code 200
         }
     }
