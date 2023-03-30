@@ -20,5 +20,5 @@ Tables:
 2.  Create an API endpoint that allows a user to create an item. (done)
 3. Create an API endpoint for retrieving items (done)
 // TODO
-4. Create an API endpoint for updating an item
-5. Create an API endpoint for deleting an item
+4. Create an API endpoint for updating an item (done)
+5. Create an API endpoint for deleting an item (done)
