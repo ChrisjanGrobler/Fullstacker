@@ -80,7 +80,7 @@ namespace API.Controllers
             }
             else
             {
-                return NoContent();
+                return NotFound();
             }
               
         }
