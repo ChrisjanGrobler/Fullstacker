@@ -22,7 +22,9 @@ namespace API.Controllers
         [Route("get")]
         public IActionResult Get()
         {
-            return Ok();
+            var item = _dataContext.Item.ToList();
+
+            return Ok(item);
         }
 
         /// <summary>
@@ -39,6 +41,8 @@ namespace API.Controllers
             return Ok(item);
         }
 
+
+
         /// <summary>
         /// An endpoint for creating an item
         /// </summary>
@@ -48,6 +52,20 @@ namespace API.Controllers
         [Route("create")]
         public IActionResult Create([FromBody] CreateItemDto request)
         {
+            if (request == null)
+            {
+                return BadRequest();
+            }
+
+            var newItem = new DataLayer.Entities.Item{ 
+
+                Name = request.Name ,
+                Description = request.Description
+            };
+
+            _dataContext.Add(newItem);
+            _dataContext.SaveChanges();
+
             return Ok(); // HTTP Status Code 200
         }
 
@@ -60,10 +78,20 @@ namespace API.Controllers
         [Route("delete/{id}")]
         public IActionResult Delete(int id)
         {
+            var item = _dataContext.Item.FirstOrDefault(x => x.Id == id);
+
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            _dataContext.Item.Remove(item);
+            _dataContext.SaveChanges();
+
             return NoContent();
         }
 
-        
+
         /// <summary>
         /// An endpoint to update an item
         /// </summary>
@@ -71,9 +99,27 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route("update/{id}")]
-        public IActionResult Update([FromQuery] int id, [FromBody] UpdateItemDto request)
+        public IActionResult Update(int id, [FromBody] UpdateItemDto request)//, [FromBody] UpdateItemDto request)
         {
-            return Ok(request); // HTTP Status Code 200
+            if (request == null)
+            {
+                return BadRequest();
+            }
+
+            var item = _dataContext.Item.FirstOrDefault(x => x.Id == id);
+
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            item.Name = request.Name;
+            item.Description = request.Description;
+
+            _dataContext.Item.Update(item);
+            _dataContext.SaveChanges();
+
+            return Ok(item);
         }
     }
 
