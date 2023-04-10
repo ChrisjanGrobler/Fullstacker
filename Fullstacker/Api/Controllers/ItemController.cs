@@ -50,7 +50,7 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("create")]
-        public IActionResult Create([FromBody] CreateItemDto request)
+        public async Task<IActionResult> Create([FromBody] CreateItemDto request)
         {
             if (request == null)
             {
@@ -64,7 +64,7 @@ namespace API.Controllers
             };
 
             _dataContext.Add(newItem);
-            _dataContext.SaveChanges();
+            await _dataContext.SaveChangesAsync();
 
             return Ok(); // HTTP Status Code 200
         }
