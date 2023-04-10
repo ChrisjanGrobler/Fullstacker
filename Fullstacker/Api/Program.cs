@@ -1,4 +1,6 @@
 using DataLayer.Contexts;
+using DataLayer.Interfaces;
+using DataLayer.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<DataContext>(o => o.UseSqlServer(builder.Configuration["Sql:ConnectionString"]), ServiceLifetime.Transient);
+builder.Services.AddTransient<IItemRepository, ItemRepository>();
 
 var app = builder.Build();
 

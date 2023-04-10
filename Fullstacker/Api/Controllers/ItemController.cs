@@ -1,5 +1,6 @@
 ﻿using API.Dtos;
 using DataLayer.Contexts;
+using DataLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,10 +10,12 @@ namespace API.Controllers
     public class ItemController : ControllerBase
     {
         private readonly DataContext _dataContext;
+        private readonly IItemRepository _itemRepository;
 
-        public ItemController(DataContext dataContext)
+        public ItemController(DataContext dataContext, IItemRepository itemRepository)
         {
             _dataContext = dataContext;
+            _itemRepository = itemRepository;
         }
 
         /// <summary>
@@ -23,7 +26,7 @@ namespace API.Controllers
         [Route("get")]
         public async Task<IActionResult> Get()
         {
-            var items = await _dataContext.Item.ToListAsync();
+            var items = await _itemRepository.Get();
 
             if (items is null || !items.Any())
                 return NotFound("No items found.");
@@ -48,8 +51,6 @@ namespace API.Controllers
             return Ok(item);
         }
 
-
-
         /// <summary>
         /// An endpoint for creating an item
         /// </summary>
@@ -64,9 +65,9 @@ namespace API.Controllers
                 return BadRequest("Name and Description is required.");
             }
 
-            var newItem = new DataLayer.Entities.Item{ 
-
-                Name = request.Name ,
+            var newItem = new DataLayer.Entities.Item
+            {
+                Name = request.Name,
                 Description = request.Description
             };
 
@@ -96,7 +97,6 @@ namespace API.Controllers
             return NoContent();
         }
 
-
         /// <summary>
         /// An endpoint to update an item
         /// </summary>
@@ -125,5 +125,4 @@ namespace API.Controllers
             return Ok(item);
         }
     }
-
 }
