@@ -1,6 +1,7 @@
 ﻿using API.Dtos;
 using DataLayer.Contexts;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -20,9 +21,9 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("get")]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            var item = _dataContext.Item.ToList();
+            var item = await _dataContext.Item.ToListAsync();
 
             return Ok(item);
         }
@@ -34,9 +35,9 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("get/{id}")]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var item =  _dataContext.Item.FirstOrDefault(x => x.Id == id);
+            var item = await _dataContext.Item.FirstOrDefaultAsync(x => x.Id == id);
 
             return Ok(item);
         }
