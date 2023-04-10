@@ -23,9 +23,12 @@ namespace API.Controllers
         [Route("get")]
         public async Task<IActionResult> Get()
         {
-            var item = await _dataContext.Item.ToListAsync();
+            var items = await _dataContext.Item.ToListAsync();
 
-            return Ok(item);
+            if (items is null || !items.Any())
+                return NotFound("No items found.");
+
+            return Ok(items);
         }
 
         /// <summary>
@@ -38,6 +41,9 @@ namespace API.Controllers
         public async Task<IActionResult> Get(int id)
         {
             var item = await _dataContext.Item.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (item is null)
+                return NotFound($"No item found with id '{id}'");
 
             return Ok(item);
         }
@@ -53,9 +59,9 @@ namespace API.Controllers
         [Route("create")]
         public async Task<IActionResult> Create([FromBody] CreateItemDto request)
         {
-            if (request == null)
+            if (string.IsNullOrWhiteSpace(request.Name) || string.IsNullOrWhiteSpace(request.Description))
             {
-                return BadRequest();
+                return BadRequest("Name and Description is required.");
             }
 
             var newItem = new DataLayer.Entities.Item{ 
@@ -64,7 +70,7 @@ namespace API.Controllers
                 Description = request.Description
             };
 
-            _dataContext.Add(newItem);
+            await _dataContext.AddAsync(newItem);
             await _dataContext.SaveChangesAsync();
 
             return Ok(); // HTTP Status Code 200
@@ -82,9 +88,7 @@ namespace API.Controllers
             var item = _dataContext.Item.FirstOrDefault(x => x.Id == id);
 
             if (item == null)
-            {
-                return NotFound();
-            }
+                return NotFound($"No item found with id '{id}'");
 
             _dataContext.Item.Remove(item);
             await _dataContext.SaveChangesAsync();
@@ -100,19 +104,17 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route("update/{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] UpdateItemDto request)//, [FromBody] UpdateItemDto request)
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateItemDto request)
         {
-            if (request == null)
+            if (string.IsNullOrWhiteSpace(request.Name) || string.IsNullOrWhiteSpace(request.Description))
             {
-                return BadRequest();
+                return BadRequest("Name and Description is required.");
             }
 
-            var item = _dataContext.Item.FirstOrDefault(x => x.Id == id);
+            var item = await _dataContext.Item.FirstOrDefaultAsync(x => x.Id == id);
 
             if (item == null)
-            {
-                return NotFound();
-            }
+                return NotFound($"No item found with id '{id}'");
 
             item.Name = request.Name;
             item.Description = request.Description;
