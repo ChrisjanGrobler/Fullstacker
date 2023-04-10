@@ -36,7 +36,7 @@ namespace API.Controllers
         [Route("get/{id}")]
         public IActionResult Get(int id)
         {
-            var item = _dataContext.Item.FirstOrDefault(x => x.Id == id);
+            var item =  _dataContext.Item.FirstOrDefault(x => x.Id == id);
 
             return Ok(item);
         }
@@ -76,7 +76,7 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpDelete]
         [Route("delete/{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var item = _dataContext.Item.FirstOrDefault(x => x.Id == id);
 
@@ -86,7 +86,7 @@ namespace API.Controllers
             }
 
             _dataContext.Item.Remove(item);
-            _dataContext.SaveChanges();
+            await _dataContext.SaveChangesAsync();
 
             return NoContent();
         }
@@ -99,7 +99,7 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route("update/{id}")]
-        public IActionResult Update(int id, [FromBody] UpdateItemDto request)//, [FromBody] UpdateItemDto request)
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateItemDto request)//, [FromBody] UpdateItemDto request)
         {
             if (request == null)
             {
@@ -117,7 +117,7 @@ namespace API.Controllers
             item.Description = request.Description;
 
             _dataContext.Item.Update(item);
-            _dataContext.SaveChanges();
+            await _dataContext.SaveChangesAsync();
 
             return Ok(item);
         }
