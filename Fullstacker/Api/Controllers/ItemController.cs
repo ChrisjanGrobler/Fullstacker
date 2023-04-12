@@ -1,20 +1,16 @@
 ﻿using API.Dtos;
-using DataLayer.Contexts;
 using DataLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     public class ItemController : ControllerBase
     {
-        private readonly DataContext _dataContext;
         private readonly IItemRepository _itemRepository;
 
-        public ItemController(DataContext dataContext, IItemRepository itemRepository)
+        public ItemController( IItemRepository itemRepository)
         {
-            _dataContext = dataContext;
             _itemRepository = itemRepository;
         }
 
