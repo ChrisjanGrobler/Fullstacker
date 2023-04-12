@@ -81,13 +81,12 @@ namespace API.Controllers
         [Route("delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var item = await _itemRepository.Get(id);
 
-            if (item == null)
-            {
-                return NotFound($"No item found with id '{id}'");
-            }
-            await _itemRepository.Delete(item);
+            //if (item == null)
+            //{
+            //    return NotFound($"No item found with id '{id}'");
+            //}
+            await _itemRepository.Delete(id);
 
             return NoContent();
         }
@@ -106,17 +105,12 @@ namespace API.Controllers
                 return BadRequest("Name and Description is required.");
             }
 
-            var item = await _itemRepository.Get(id);
+            //if (item == null)
+            //    return NotFound($"No item found with id '{id}'");
 
-            if (item == null)
-                return NotFound($"No item found with id '{id}'");
+            await _itemRepository.Update(id, request.Name, request.Description);
 
-            item.Name = request.Name;
-            item.Description = request.Description;
-
-            await _itemRepository.Update(item);
-
-            return Ok(item);
+            return Ok();
         }
     }
 }
