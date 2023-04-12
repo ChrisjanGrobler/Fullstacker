@@ -15,5 +15,28 @@ namespace DataLayer.Repositories
 
         public async Task<IList<Entities.Item>> Get()
          => await _dataContext.Item.ToListAsync();
+
+        public async Task<Entities.Item> Get(int id)
+            => await _dataContext.Item.FirstOrDefaultAsync(x => x.Id == id);
+
+        public async Task Delete(Entities.Item item)
+        {
+            _dataContext.Item.Remove(item);
+            await _dataContext.SaveChangesAsync();
+        }
+
+        public async Task<Entities.Item> Create(Entities.Item item)
+        {
+            _dataContext.Item.Add(item);
+            await _dataContext.SaveChangesAsync();
+            return item;
+        }
+
+        public async Task<Entities.Item> Update(Entities.Item item)
+        {
+            _dataContext.Item.Update(item);
+            await _dataContext.SaveChangesAsync();
+            return item;
+        }
     }
 }
