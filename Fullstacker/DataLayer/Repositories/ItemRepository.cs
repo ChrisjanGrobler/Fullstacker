@@ -36,7 +36,7 @@ namespace DataLayer.Repositories
         {
             var item = new Entities.Item { Id = id, Description = description, Name = name };
 
-            if (item == null)
+            if (item.Name == null || item.Description == null)
             {
                 return null;
             }
