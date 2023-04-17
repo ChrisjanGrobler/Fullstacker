@@ -1,20 +1,16 @@
 ﻿using API.Dtos;
-using DataLayer.Contexts;
 using DataLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     public class ItemController : ControllerBase
     {
-        private readonly DataContext _dataContext;
         private readonly IItemRepository _itemRepository;
 
-        public ItemController(DataContext dataContext, IItemRepository itemRepository)
+        public ItemController( IItemRepository itemRepository)
         {
-            _dataContext = dataContext;
             _itemRepository = itemRepository;
         }
 
@@ -43,7 +39,7 @@ namespace API.Controllers
         [Route("get/{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var item = await _dataContext.Item.FirstOrDefaultAsync(x => x.Id == id);
+            var item = await _itemRepository.Get(id);
 
             if (item is null)
                 return NotFound($"No item found with id '{id}'");
@@ -71,8 +67,7 @@ namespace API.Controllers
                 Description = request.Description
             };
 
-            await _dataContext.AddAsync(newItem);
-            await _dataContext.SaveChangesAsync();
+            await _itemRepository.Create(newItem);
 
             return Ok(); // HTTP Status Code 200
         }
@@ -86,13 +81,7 @@ namespace API.Controllers
         [Route("delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var item = _dataContext.Item.FirstOrDefault(x => x.Id == id);
-
-            if (item == null)
-                return NotFound($"No item found with id '{id}'");
-
-            _dataContext.Item.Remove(item);
-            await _dataContext.SaveChangesAsync();
+            await _itemRepository.Delete(id);
 
             return NoContent();
         }
@@ -111,18 +100,9 @@ namespace API.Controllers
                 return BadRequest("Name and Description is required.");
             }
 
-            var item = await _dataContext.Item.FirstOrDefaultAsync(x => x.Id == id);
+            await _itemRepository.Update(id, request.Name, request.Description);
 
-            if (item == null)
-                return NotFound($"No item found with id '{id}'");
-
-            item.Name = request.Name;
-            item.Description = request.Description;
-
-            _dataContext.Item.Update(item);
-            await _dataContext.SaveChangesAsync();
-
-            return Ok(item);
+            return Ok();    
         }
     }
 }
