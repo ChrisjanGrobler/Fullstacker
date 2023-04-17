@@ -21,8 +21,7 @@ namespace DataLayer.Repositories
 
         public async Task Delete(int id)
         {
-            var item = await _dataContext.Item.FirstOrDefaultAsync(x => x.Id == id);
-            _dataContext.Item.Remove(item);
+            _dataContext.Item.Remove(await _dataContext.Item.FirstOrDefaultAsync(x => x.Id == id));
             await _dataContext.SaveChangesAsync();
         }
 
@@ -35,13 +34,16 @@ namespace DataLayer.Repositories
 
         public async Task<Entities.Item> Update(int id, string name, string description)
         {
-            var item = await _dataContext.Item.FirstOrDefaultAsync(x => x.Id == id);
+            var item = new Entities.Item { Id = id, Description = description, Name = name };
 
-            item.Name = name;
-            item.Description = description; 
+            if (item == null)
+            {
+                return null;
+            }
 
             _dataContext.Item.Update(item);
             await _dataContext.SaveChangesAsync();
+
             return item;
         }
     }
