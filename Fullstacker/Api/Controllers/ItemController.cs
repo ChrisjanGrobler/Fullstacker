@@ -100,18 +100,9 @@ namespace API.Controllers
                 return BadRequest("Name and Description is required.");
             }
 
-            try
-            {
-                await _itemRepository.Update(id, request.Name, request.Description);
+            await _itemRepository.Update(id, request.Name, request.Description);
 
-                return Ok();
-            }
-            catch
-            {
-                return NotFound($"Item ID:{id} was not found");
-            }
-
-            
+            return Ok();    
         }
     }
 }
