@@ -22,3 +22,12 @@ Tables:
 // TODO
 4. Create an API endpoint for updating an item (done)
 5. Create an API endpoint for deleting an item (done)
+6. Based off the Inventory.sql table, create the same classes for it as we did for Item. It needs to have the following methods that will communicate with the db:
+- Get Inevntory Items
+- Get Inventory Item by Id
+- Update Inventory Item
+- Create Inventory Item
+- Delete Inventory Item
+
+The Get methods should return the following fields:
+- InventoryId, ItemId, Item Name, Item Description, Quantity, CreatedDate, UpdatedDate
