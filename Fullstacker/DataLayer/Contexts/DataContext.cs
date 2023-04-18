@@ -10,5 +10,6 @@ namespace DataLayer.Contexts
         }
 
         public DbSet<Item> Item { get; set; }
+        public DbSet<Inventory> Inventory { get; set; }
     }
 }
