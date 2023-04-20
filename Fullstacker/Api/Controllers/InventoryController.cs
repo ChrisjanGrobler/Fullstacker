@@ -23,6 +23,9 @@ namespace API.Controllers
         {
             var inventory = await _inventoryRepository.Get();
 
+            if (inventory is null || !inventory.Any())
+                return NotFound("No items found.");
+
             return Ok(inventory);
         }
 
@@ -36,8 +39,34 @@ namespace API.Controllers
         public async Task<IActionResult> Get(int id)
         {
             var inventory = await _inventoryRepository.Get(id);
+            if (inventory is null)
+                return NotFound($"No inventory found with id '{id}'");
 
             return Ok(inventory);
+        }
+
+        /// <summary>
+        /// An endpoint for creating an item
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("create")]
+        public async Task<IActionResult> Create([FromBody] CreateInventoryDto request)
+        {
+            if (string.IsNullOrWhiteSpace(request.ItemId.ToString()) || string.IsNullOrWhiteSpace(request.Quantity.ToString()))
+            {
+                return BadRequest("Item ID and Quantity is required.");
+            }
+
+            var inventory = new DataLayer.Entities.Inventory
+            {
+                ItemId = request.ItemId,
+                Quantity = request.Quantity
+            };
+            await _inventoryRepository.Create(inventory);
+
+            return Ok();
         }
 
         /// <summary>
@@ -63,26 +92,12 @@ namespace API.Controllers
         [Route("update/{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateInvetoryDto request)
         {
-            await _inventoryRepository.Update(id, request.ItemId, request.Quantity);
-
-            return Ok();
-        }
-
-        /// <summary>
-        /// An endpoint for creating an item
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("create")]
-        public async Task<IActionResult> Create([FromBody] CreateInventoryDto request)
-        {
-            var inventory = new DataLayer.Entities.Inventory
+            if (string.IsNullOrWhiteSpace(request.ItemId.ToString()) || string.IsNullOrWhiteSpace(request.Quantity.ToString()))
             {
-                ItemId = request.ItemId,
-                Quantity = request.Quantity
-            };
-            await _inventoryRepository.Create(inventory);
+                return BadRequest("Item ID and Quantity is required.");
+            }
+
+            await _inventoryRepository.Update(id, request.ItemId, request.Quantity);
 
             return Ok();
         }

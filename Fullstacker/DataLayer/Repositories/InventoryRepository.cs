@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataLayer.Repositories
 {
-    public class InventoryRepository
+    public class InventoryRepository : IInventoryRepository
     {
         private readonly DataContext _dataContext;
 
@@ -14,10 +14,11 @@ namespace DataLayer.Repositories
         }
 
         public async Task<IList<Entities.Inventory>> Get()
-            => await _dataContext.Inventory.ToListAsync();
+        => await _dataContext.Inventory.Include(x => x.item).ToListAsync();
+
 
         public async Task<Entities.Inventory> Get(int id)
-            => await _dataContext.Inventory.FirstOrDefaultAsync(x => x.Id == id);
+            => await _dataContext.Inventory.Include(x => x.item).FirstOrDefaultAsync(x => x.Id == id);
 
         public async Task Delete(int id)
         {
@@ -28,9 +29,12 @@ namespace DataLayer.Repositories
         }
         public async Task<Entities.Inventory> Update(int id, int itemId, int quantity)
         {
-            var inventory = new Entities.Inventory { Id = id, ItemId = itemId, Quantity = quantity, UpdatedOn = DateTime.Now};
+            var inventory = await _dataContext.Inventory.FindAsync(id);
 
-            _dataContext.Inventory.Update(inventory);
+            inventory.ItemId = itemId;
+            inventory.Quantity = quantity;
+            inventory.UpdatedOn = DateTimeOffset.UtcNow;
+
             await _dataContext.SaveChangesAsync();
 
             return inventory;
