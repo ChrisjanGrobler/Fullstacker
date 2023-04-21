@@ -14,11 +14,11 @@ namespace DataLayer.Repositories
         }
 
         public async Task<IList<Entities.Inventory>> Get()
-        => await _dataContext.Inventory.Include(x => x.item).ToListAsync();
+        => await _dataContext.Inventory.Include(x => x.Item).ToListAsync();
 
 
         public async Task<Entities.Inventory> Get(int id)
-            => await _dataContext.Inventory.Include(x => x.item).FirstOrDefaultAsync(x => x.Id == id);
+            => await _dataContext.Inventory.Include(x => x.Item).FirstOrDefaultAsync(x => x.Id == id);
 
         public async Task Delete(int id)
         {

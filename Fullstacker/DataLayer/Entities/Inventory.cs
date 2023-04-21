@@ -8,6 +8,6 @@
         public DateTimeOffset CreatedOn { get; set; }
         public DateTimeOffset UpdatedOn { get; set; }
 
-        public Item item { get; set; }
+        public Item Item { get; set; }
     }
 }

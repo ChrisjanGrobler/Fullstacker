@@ -14,7 +14,7 @@ namespace API.Controllers
             _inventoryRepository = inventoryRepository;
         }
         /// <summary>
-        /// An endpoint for retrieving a list of items
+        /// An endpoint for retrieving a list of inventories
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -30,7 +30,7 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// An endpoint for retrieving an item by id
+        /// An endpoint for retrieving an inventory by id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -46,7 +46,7 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// An endpoint for creating an item
+        /// An endpoint for creating an inventory
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -70,7 +70,7 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// An endpoint to delete an item
+        /// An endpoint to delete an inventory
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -84,7 +84,7 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// An endpoint to update an item
+        /// An endpoint to update an inventory
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
