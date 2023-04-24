@@ -14,11 +14,41 @@ namespace DataLayer.Repositories
         }
 
         public async Task<IList<Entities.Inventory>> Get()
-        => await _dataContext.Inventory.Include(x => x.Item).ToListAsync();
+        {
+            return await _dataContext.Inventory.Select(i => new Entities.Inventory
+                {
+                    Id = i.Id,
+                    Quantity = i.Quantity,
+                    CreatedOn = i.CreatedOn,
+                    UpdatedOn = i.UpdatedOn,
+                    Item = new Entities.Item
+                    {
+                        Id = i.Item.Id,
+                        Name = i.Item.Name,
+                        Description = i.Item.Description
+                    }
+                }).ToListAsync();
+        }
 
 
         public async Task<Entities.Inventory> Get(int id)
-            => await _dataContext.Inventory.Include(x => x.Item).FirstOrDefaultAsync(x => x.Id == id);
+        {
+                var inventory = await _dataContext.Inventory.Include(i => i.Item).Select(i => new Entities.Inventory
+           {
+               Id = i.Id,
+               Quantity = i.Quantity,
+               CreatedOn = i.CreatedOn,
+               UpdatedOn = i.UpdatedOn,
+               Item = new Entities.Item
+               {
+                   Id = i.Item.Id,
+                   Name = i.Item.Name,
+                   Description = i.Item.Description
+               }
+           }).FirstOrDefaultAsync(x => x.Id == id);
+
+                return inventory ?? new Entities.Inventory();
+        }
 
         public async Task Delete(int id)
         {
