@@ -13,6 +13,7 @@ namespace API.Controllers
         {
             _inventoryRepository = inventoryRepository;
         }
+
         /// <summary>
         /// An endpoint for retrieving a list of inventories
         /// </summary>
@@ -39,6 +40,7 @@ namespace API.Controllers
         public async Task<IActionResult> Get(int id)
         {
             var inventory = await _inventoryRepository.Get(id);
+
             if (inventory is null)
                 return NotFound($"No inventory found with id '{id}'");
 
@@ -54,9 +56,9 @@ namespace API.Controllers
         [Route("create")]
         public async Task<IActionResult> Create([FromBody] CreateInventoryDto request)
         {
-            if (string.IsNullOrWhiteSpace(request.ItemId.ToString()) || string.IsNullOrWhiteSpace(request.Quantity.ToString()))
+            if (request.ItemId < 0 || request.Quantity < 0)
             {
-                return BadRequest("Item ID and Quantity is required.");
+                return BadRequest("Item ID or Quantity cannot be less than 0.");
             }
 
             var inventory = new DataLayer.Entities.Inventory
@@ -64,6 +66,7 @@ namespace API.Controllers
                 ItemId = request.ItemId,
                 Quantity = request.Quantity
             };
+
             await _inventoryRepository.Create(inventory);
 
             return Ok();
@@ -92,9 +95,9 @@ namespace API.Controllers
         [Route("update/{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateInvetoryDto request)
         {
-            if (string.IsNullOrWhiteSpace(request.ItemId.ToString()) || string.IsNullOrWhiteSpace(request.Quantity.ToString()))
+            if (request.ItemId < 0 || request.Quantity < 0)
             {
-                return BadRequest("Item ID and Quantity is required.");
+                return BadRequest("Item ID or Quantity cannot be less than 0.");
             }
 
             await _inventoryRepository.Update(id, request.ItemId, request.Quantity);

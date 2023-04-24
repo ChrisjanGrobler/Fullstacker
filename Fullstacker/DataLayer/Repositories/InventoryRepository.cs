@@ -42,7 +42,7 @@ namespace DataLayer.Repositories
 
         public async Task<Entities.Inventory> Create(Entities.Inventory inventory)
         {
-            inventory.CreatedOn = DateTime.Now;
+            inventory.CreatedOn = DateTimeOffset.Now;
             _dataContext.Inventory.Add(inventory);
             await _dataContext.SaveChangesAsync();
 
