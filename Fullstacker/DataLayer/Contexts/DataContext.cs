@@ -1,5 +1,5 @@
-﻿using DataLayer.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Shared.Entities;
 
 namespace DataLayer.Contexts
 {

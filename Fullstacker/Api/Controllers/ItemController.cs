@@ -1,6 +1,7 @@
 ﻿using API.Dtos;
 using DataLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Entities;
 
 namespace API.Controllers
 {
@@ -61,7 +62,7 @@ namespace API.Controllers
                 return BadRequest("Name and Description is required.");
             }
 
-            var newItem = new DataLayer.Entities.Item
+            var newItem = new Item
             {
                 Name = request.Name,
                 Description = request.Description

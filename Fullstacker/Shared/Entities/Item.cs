@@ -1,4 +1,4 @@
-﻿namespace DataLayer.Entities
+﻿namespace Shared.Entities
 {
     public class Item
     {
