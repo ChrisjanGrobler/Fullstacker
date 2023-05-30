@@ -34,7 +34,7 @@ namespace DataLayer.Repositories
             return entities.GetInventoryDtos();
         }
 
-        public async Task<Inventory> Get(int id)
+        public async Task<Shared.Dtos.Responses.InventoryDto> Get(int id)
         {
             var inventory = await _dataContext.Inventory.Include(i => i.Item).Select(i => new Inventory
             {
@@ -50,7 +50,7 @@ namespace DataLayer.Repositories
                 }
             }).FirstOrDefaultAsync(x => x.Id == id);
 
-            return inventory ?? new Inventory();
+            return inventory.GetInventoryDto();
         }
 
         public async Task Delete(int id)
