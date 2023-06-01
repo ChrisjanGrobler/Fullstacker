@@ -1,6 +1,7 @@
 ﻿using DataLayer.Contexts;
 using DataLayer.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Shared.Entities;
 
 namespace DataLayer.Repositories
 {
@@ -13,21 +14,21 @@ namespace DataLayer.Repositories
             _dataContext = dataContext;
         }
 
-        public async Task<IList<Entities.Item>> Get()
+        public async Task<IList<Item>> Get()
          => await _dataContext.Item.ToListAsync();
 
-        public async Task<Entities.Item> Get(int id)
+        public async Task<Item> Get(int id)
             => await _dataContext.Item.FirstOrDefaultAsync(x => x.Id == id);
 
         public async Task Delete(int id)
         {
-            var item = new Entities.Item { Id = id };
+            var item = new Item { Id = id };
             _dataContext.Item.Remove(item); 
 
             await _dataContext.SaveChangesAsync();
         }
 
-        public async Task<Entities.Item> Create(Entities.Item item)
+        public async Task<Item> Create(Item item)
         {
             _dataContext.Item.Add(item);
             await _dataContext.SaveChangesAsync();
@@ -35,9 +36,9 @@ namespace DataLayer.Repositories
             return item;
         }
 
-        public async Task<Entities.Item> Update(int id, string name, string description)
+        public async Task<Item> Update(int id, string name, string description)
         {
-            var item = new Entities.Item { Id = id, Description = description, Name = name };
+            var item = new Item { Id = id, Description = description, Name = name };
 
             _dataContext.Item.Update(item);
             await _dataContext.SaveChangesAsync();

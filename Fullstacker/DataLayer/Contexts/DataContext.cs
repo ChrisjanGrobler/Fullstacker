@@ -1,5 +1,5 @@
-﻿using DataLayer.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Shared.Entities;
 
 namespace DataLayer.Contexts
 {
@@ -10,5 +10,6 @@ namespace DataLayer.Contexts
         }
 
         public DbSet<Item> Item { get; set; }
+        public DbSet<Inventory> Inventory { get; set; }
     }
 }
