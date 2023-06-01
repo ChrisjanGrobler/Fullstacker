@@ -1,6 +1,6 @@
-﻿namespace API.Dtos
+﻿namespace Shared.Dtos.Responses
 {
-    public class CreateInventoryDto
+    public class UpdateInvetoryDto
     {
         public int ItemId { get; set; }
         public int Quantity { get; set; }

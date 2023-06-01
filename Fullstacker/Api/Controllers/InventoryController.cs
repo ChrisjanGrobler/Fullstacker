@@ -1,7 +1,6 @@
-﻿using API.Dtos;
-using DataLayer.Interfaces;
+﻿using DataLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Shared.Entities;
+using Shared.Dtos.Responses;
 
 namespace API.Controllers
 {
@@ -62,13 +61,7 @@ namespace API.Controllers
                 return BadRequest("Item ID or Quantity cannot be less than 0.");
             }
 
-            var inventory = new Inventory
-            {
-                ItemId = request.ItemId,
-                Quantity = request.Quantity
-            };
-
-            await _inventoryRepository.Create(inventory);
+            await _inventoryRepository.Create(request);
 
             return Ok();
         }

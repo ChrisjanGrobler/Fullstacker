@@ -27,6 +27,15 @@ namespace Shared.Utilities
                 Quantity = entity.Quantity,
                 Description = entity.Item.Description
             };
+        }    
+        public static Inventory CreateInventory(CreateInventoryDto entity)
+        {
+            return new Inventory
+            {
+                ItemId = entity.ItemId,
+                Quantity = entity.Quantity,
+                CreatedOn = DateTimeOffset.UtcNow,
+            };
         }
     }
 }

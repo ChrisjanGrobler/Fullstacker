@@ -3,6 +3,7 @@ using DataLayer.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Shared.Entities;
 using Shared.Utilities;
+using Shared.Dtos.Responses;
 
 namespace DataLayer.Repositories
 {
@@ -15,7 +16,7 @@ namespace DataLayer.Repositories
             _dataContext = dataContext;
         }
 
-        public async Task<IList<Shared.Dtos.Responses.InventoryDto>> Get()
+        public async Task<IList<InventoryDto>> Get()
         {
             var entities = await _dataContext.Inventory.Select(i => new Inventory
             {
@@ -34,7 +35,7 @@ namespace DataLayer.Repositories
             return entities.GetInventoryDtos();
         }
 
-        public async Task<Shared.Dtos.Responses.InventoryDto> Get(int id)
+        public async Task<InventoryDto> Get(int id)
         {
             var inventory = await _dataContext.Inventory.Include(i => i.Item).Select(i => new Inventory
             {
@@ -74,9 +75,10 @@ namespace DataLayer.Repositories
             return inventory;
         }
 
-        public async Task<Inventory> Create(Inventory inventory)
+        public async Task<Inventory> Create(CreateInventoryDto entity)
         {
-            inventory.CreatedOn = DateTimeOffset.Now;
+            var inventory = Converter.CreateInventory(entity);
+
             _dataContext.Inventory.Add(inventory);
             await _dataContext.SaveChangesAsync();
 
